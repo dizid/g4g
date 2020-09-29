@@ -1,19 +1,25 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
-  <searchresults />
+  <div id="app">
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/clashroyale">Clash Royale</router-link> |
+      <router-link to="/fortnite">Fortnite</router-link> |
+      <router-link to="/about">About</router-link>
+    </div>
+    <router-view />
+  </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import searchresults from "./components/SearchResults.vue";
+/* import home from "./views/Home.vue"; */
 
 export default {
-  name: "App",
-  components: {
-    HelloWorld,
-    searchresults
-  }
+  name: "App"
+  /*   data() {
+    return {
+      slug: "clashroyale"
+    };
+  } */
 };
 </script>
 
