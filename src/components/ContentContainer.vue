@@ -9,13 +9,23 @@
 <script>
 export default {
   props: ["slug"],
+  mounted() {
+    let PSEScript = document.createElement("script");
+    PSEScript.setAttribute(
+      "src",
+      "https://cse.google.com/cse.js?cx=078e1680c0ebaf715"
+    );
+    document.head.appendChild(PSEScript);
+  },
   head: {
+    title: {
+      inner: "It will be a pleasure",
+    },
     script: [
       {
         type: "text/javascript",
         src: "https://cse.google.com/cse.js?cx=078e1680c0ebaf715",
         async: true,
-        body: true,
       },
     ],
   },
