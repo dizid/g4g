@@ -3,7 +3,7 @@
   <h2>Search box</h2>
   <div class="gcse-searchbox-only"></div>
   <h2>Search results</h2>
-  <div class="gcse-searchresults-only"></div>
+  <div class="gcse-searchresults"></div>
 </template>
 
 <script>
