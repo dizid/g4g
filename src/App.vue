@@ -3,10 +3,9 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/clashroyale">Clash Royale</router-link> |
-      <router-link to="/fortnite">Fortnite</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/fortnite">Fortnite</router-link> 
     </div>
-    <router-view />
+    <router-view :key="$route.fullPath" />
   </div>
 </template>
 
@@ -14,7 +13,7 @@
 /* import home from "./views/Home.vue"; */
 
 export default {
-  name: "App"
+  name: "App",
   /*   data() {
     return {
       slug: "clashroyale"
