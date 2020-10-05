@@ -1,7 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "@/views/Home.vue";
 import About from "@/views/About.vue";
-import ContentContainer from "@/components/ContentContainer.vue";
 
 const routes = [
   {
@@ -11,10 +10,11 @@ const routes = [
   },
   {
     path: "/:slug",
-    name: "Content",
-    component: ContentContainer,
+    name: "PSE",
+    component: Home,
     props: true,
   },
+
   {
     path: "/about",
     name: "About",
