@@ -1,5 +1,6 @@
 <template>
-  <!--   Key:refreshes the ContentContainer component when another PSE is selected, so the right PSE is picked in 'mounted' -->
+  <!-- Key:refreshes Home component when another Programmable Search Engine is selected, so right PSE is picked in 'mounted' -->
+  <!-- :key="$route.fullPath" -->
   <router-view :key="$route.fullPath" />
 </template>
 <script>
@@ -7,5 +8,3 @@ export default {
   name: "App"
 };
 </script>
-
-<style></style>
