@@ -47,11 +47,12 @@
       </div>
     </div>
     <footer
-      class="mb-2 h-10 bg-gray-700 text-bold text-right text-2xl tracking-wider"
+      class="mb-2 h-10 bg-gray-700 text-bold text-right text-xl tracking-wider"
     >
       <p>
         Made by
-        <a class="text-orange-500" href="https://dizid.com">dizid</a> 2020
+        <a class="text-orange-500 underline" href="https://dizid.com">dizid</a>
+        2020
       </p>
     </footer>
   </div>
