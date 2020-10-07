@@ -1,33 +1,29 @@
 <template>
-  <div class="flex flex-col h-screen justify-between">
-    <nav class="flex items-center justify-between flex-wrap bg-gray-700 p-6">
-      <div class="flex items-center flex-shrink-0 text-white mr-6">
-        <img
-          src="../assets/heart4.svg"
-          alt="triangle with all three sides equal"
-          height="33"
-          width="33"
-        />
-        <router-link
-          to="/"
-          class="block lg:inline-block lg:mt-0 text-orange-500 hover:text-orange-900 mr-4"
-        >
-          <span class="ml-4 font-semibold text-2xl tracking-tight"
-            >Google 4 Games</span
-          ></router-link
-        >
-      </div>
+  <div class="flex flex-col h-screen">
+    <nav class="flex items-center justify-start bg-gray-700 p-6">
+      <img
+        src="../assets/heart4.svg"
+        alt="triangle with all three sides equal"
+        height="33"
+        width="33"
+      />
+      <router-link
+        to="/"
+        class="block lg:inline-block lg:mt-0 text-orange-500 hover:text-orange-900 mr-4"
+      >
+        <span class="ml-4 font-semibold text-2xl tracking-tight"
+          >Google 4 Games</span
+        ></router-link
+      >
     </nav>
-    <div
-      class="mb-auto flex flex-wrap overflow-hidden sm:-mx-1  items-center mt-3"
-    >
-      <div class="mb-auto w-full overflow-hidden sm:my-1 sm:px-1 xl:w-1/5 p-6">
+    <div class="flex flex-grow flex-wrap overflow-hidden sm:-mx-1 mt-3p">
+      <div class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-1/5 p-6">
         <!-- ADS LEFT  -->
       </div>
 
       <div
         id="middle-column"
-        class="mb-auto w-full overflow-hidden sm:my-1 sm:px-1 xl:w-3/5 border rounded border-orange-500 p-1"
+        class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-3/5 border rounded border-orange-500 p-1"
       >
         <!-- selectbox callt method changeRoute: router go to page /:slug (reloads page, through :key in App.vue)-->
         <div>
@@ -45,15 +41,13 @@
         </div>
         <div class="text-blue-500 my-3 mx-6">Search in {{ PSEname }}:</div>
         <Searchbox :key="componentKey" />
-        <div
-          class="mb-auto w-full overflow-hidden sm:my-1 sm:px-1 xl:w-1/5 p-6"
-        >
+        <div class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-1/5 p-6">
           <!-- ADS RIGHT -->
         </div>
       </div>
     </div>
     <footer
-      class="mb-1 h-10 bg-gray-700 text-bold text-right text-2xl tracking-wider"
+      class="mb-2 h-10 bg-gray-700 text-bold text-right text-2xl tracking-wider"
     >
       <p>
         Made by
@@ -67,14 +61,14 @@
 import Searchbox from "../components/Searchbox";
 export default {
   components: {
-    Searchbox
+    Searchbox,
   },
   props: { slug: "" },
   data() {
     return {
       selected: "",
       componentKey: 0,
-      PSEname: ""
+      PSEname: "",
     };
   },
   methods: {
@@ -113,11 +107,11 @@ export default {
       );
       document.head.appendChild(PSEScript);
       this.componentKey += 1; // I want to reload Searchbox component  */
-    }
+    },
   },
   mounted: function() {
     this.choosePSE();
-  }
+  },
 };
 </script>
 
