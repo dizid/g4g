@@ -1,52 +1,51 @@
 <template>
-  <div class="flex flex-col h-screen">
-    <nav class="flex items-center justify-start bg-gray-700 p-6">
-      <img
-        src="../assets/heart4.svg"
-        alt="triangle with all three sides equal"
-        height="33"
-        width="33"
-      />
-      <router-link
-        to="/"
-        class="block lg:inline-block lg:mt-0 text-orange-500 hover:text-orange-900 mr-4"
-      >
-        <span class="ml-4 font-semibold text-2xl tracking-tight"
-          >Google 4 Games</span
-        ></router-link
-      >
-    </nav>
-    <div class="flex flex-grow flex-wrap overflow-hidden sm:-mx-1 mt-3p">
-      <div class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-1/5 p-6">
-        <!-- ADS LEFT  -->
-      </div>
+  <nav class="flex items-center justify-start bg-gray-700 p-6">
+    <img
+      src="../assets/heart4.svg"
+      alt="triangle with all three sides equal"
+      height="33"
+      width="33"
+    />
+    <router-link
+      to="/"
+      class="block lg:inline-block lg:mt-0 text-orange-500 hover:text-orange-900 mr-4"
+    >
+      <span class="ml-4 font-semibold text-2xl tracking-tight"
+        >Google 4 Games</span
+      ></router-link
+    >
+  </nav>
+  <div class="flex flex-grow flex-wrap overflow-hidden sm:-mx-1 mt-3p">
+    <div class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-1/5 p-6">
+      <!-- ADS LEFT  -->
+    </div>
 
-      <div
-        id="middle-column"
-        class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-3/5 border rounded border-orange-500 p-1"
-      >
-        <!-- selectbox callt method changeRoute: router go to page /:slug (reloads page, through :key in App.vue)-->
-        <div>
-          <select
-            @change="changeRoute()"
-            v-model="selected"
-            class="mx-4 bg-blue-800 py-2 px-4 font-bold text-blue-300 text-sm rounded-lg"
-          >
-            <option disabled value="">Select your game:</option>
-            <option value="clashroyale">Clash Royale</option>
-            <option value="fortnite">Fortnite</option>
-            <option value="minecraft">Minecraft</option>
-            <option value="destiny2">Destiny 2</option>
-          </select>
-        </div>
-        <div class="text-blue-500 my-3 mx-6">Search in {{ PSEname }}:</div>
-        <Searchbox :key="componentKey" />
-        <div class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-1/5 p-6">
-          <!-- ADS RIGHT -->
-        </div>
+    <div
+      id="middle-column"
+      class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-3/5 border rounded border-orange-500 p-1"
+    >
+      <!-- selectbox callt method changeRoute: router go to page /:slug (reloads page, through :key in App.vue)-->
+      <div>
+        <select
+          @change="changeRoute()"
+          v-model="selected"
+          class="mx-4 bg-blue-800 py-2 px-4 font-bold text-blue-300 text-sm rounded-lg"
+        >
+          <option disabled value="">Select your game:</option>
+          <option value="clashroyale">Clash Royale</option>
+          <option value="fortnite">Fortnite</option>
+          <option value="minecraft">Minecraft</option>
+          <option value="destiny2">Destiny 2</option>
+        </select>
+      </div>
+      <div class="text-blue-500 my-3 mx-6">Search in {{ PSEname }}:</div>
+      <Searchbox :key="componentKey" />
+      <div class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-1/5 p-6">
+        <!-- ADS RIGHT -->
       </div>
     </div>
-    <footer
+  </div>
+  <!--     <footer
       class="mb-2 h-10 bg-gray-700 text-bold text-right text-xl tracking-wider"
     >
       <p>
@@ -54,8 +53,7 @@
         <a class="text-orange-500 underline" href="https://dizid.com">dizid</a>
         2020
       </p>
-    </footer>
-  </div>
+    </footer> -->
 </template>
 
 <script>
