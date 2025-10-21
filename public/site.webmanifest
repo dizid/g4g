@@ -1,6 +1,7 @@
 {
-  "name": "Google 4 Games - The Games Search Engin",
+  "name": "Google 4 Games - The Ultimate Gaming Search Engine",
   "short_name": "G4G",
+  "description": "Search gaming guides, strategies, and community content across 10+ popular games",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +14,9 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "theme_color": "#0a0e27",
+  "background_color": "#060816",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
 }

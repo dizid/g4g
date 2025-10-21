@@ -231,17 +231,13 @@ function handleGameSelect(game) {
 
 /**
  * Handle search from history
- * This will trigger the search in the search box
+ * Executes the search programmatically using the store
  *
  * @param {string} searchTerm - Search term from history
  */
 function handleHistorySearch(searchTerm) {
-  // Add to history again (moves to top)
-  gameStore.addToHistory(searchTerm);
-
-  // Note: Actual search execution would be handled by Google CSE
-  // You could trigger it programmatically if needed
-  console.log('Searching for:', searchTerm);
+  // Execute the search programmatically
+  gameStore.executeSearch(searchTerm);
 }
 
 /**

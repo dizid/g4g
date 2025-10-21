@@ -10,6 +10,8 @@
  */
 
 import { defineStore } from 'pinia';
+import { GAMES } from '@/config/games';
+import { STORAGE_KEYS, PREFERENCES_DEFAULTS } from '@/constants';
 
 export const useGameStore = defineStore('game', {
   // State: Define reactive data properties
@@ -20,99 +22,8 @@ export const useGameStore = defineStore('game', {
     // Loading state for search engine initialization
     isLoading: false,
 
-    // Available games configuration with Google Programmable Search Engine IDs
-    games: [
-      {
-        id: 'all',
-        name: 'All Games',
-        icon: '🎮',
-        description: 'Search across all gaming content',
-        searchEngineId: 'a9a230432b58ecd21',
-        color: 'from-indigo-500 to-purple-600',
-        category: 'general',
-      },
-      {
-        id: 'fortnite',
-        name: 'Fortnite',
-        icon: '⚡',
-        description: 'Battle Royale tips, guides & news',
-        searchEngineId: '22f2b892095830119',
-        color: 'from-blue-500 to-cyan-500',
-        category: 'battle-royale',
-      },
-      {
-        id: 'minecraft',
-        name: 'Minecraft',
-        icon: '⛏️',
-        description: 'Builds, mods & crafting guides',
-        searchEngineId: '9602c93f57213795b',
-        color: 'from-green-500 to-emerald-600',
-        category: 'sandbox',
-      },
-      {
-        id: 'clashroyale',
-        name: 'Clash Royale',
-        icon: '👑',
-        description: 'Deck strategies & card guides',
-        searchEngineId: '078e1680c0ebaf715',
-        color: 'from-orange-500 to-red-500',
-        category: 'strategy',
-      },
-      {
-        id: 'destiny2',
-        name: 'Destiny 2',
-        icon: '🌟',
-        description: 'Raids, weapons & exotic guides',
-        searchEngineId: '8ecad2f2d493f4ab5',
-        color: 'from-purple-500 to-pink-500',
-        category: 'fps',
-      },
-      {
-        id: 'valorant',
-        name: 'Valorant',
-        icon: '🎯',
-        description: 'Agent guides & tactical tips',
-        searchEngineId: 'a9a230432b58ecd21', // Using default for now
-        color: 'from-red-500 to-rose-600',
-        category: 'fps',
-      },
-      {
-        id: 'leagueoflegends',
-        name: 'League of Legends',
-        icon: '⚔️',
-        description: 'Champion builds & strategies',
-        searchEngineId: 'a9a230432b58ecd21', // Using default for now
-        color: 'from-yellow-500 to-amber-600',
-        category: 'moba',
-      },
-      {
-        id: 'roblox',
-        name: 'Roblox',
-        icon: '🎲',
-        description: 'Game guides & creation tips',
-        searchEngineId: 'a9a230432b58ecd21', // Using default for now
-        color: 'from-pink-500 to-fuchsia-600',
-        category: 'sandbox',
-      },
-      {
-        id: 'apexlegends',
-        name: 'Apex Legends',
-        icon: '🔫',
-        description: 'Legend guides & battle strategies',
-        searchEngineId: 'a9a230432b58ecd21', // Using default for now
-        color: 'from-red-600 to-orange-600',
-        category: 'battle-royale',
-      },
-      {
-        id: 'genshinimpact',
-        name: 'Genshin Impact',
-        icon: '✨',
-        description: 'Character builds & world guides',
-        searchEngineId: 'a9a230432b58ecd21', // Using default for now
-        color: 'from-cyan-500 to-blue-600',
-        category: 'rpg',
-      },
-    ],
+    // Available games configuration (imported from config)
+    games: GAMES,
 
     // Search history - stored locally and in state
     searchHistory: [],
@@ -122,9 +33,9 @@ export const useGameStore = defineStore('game', {
 
     // User preferences
     preferences: {
-      maxHistoryItems: 10,
-      showSearchSuggestions: true,
-      theme: 'dark',
+      maxHistoryItems: PREFERENCES_DEFAULTS.MAX_HISTORY_ITEMS,
+      showSearchSuggestions: PREFERENCES_DEFAULTS.SHOW_SEARCH_SUGGESTIONS,
+      theme: PREFERENCES_DEFAULTS.THEME,
     }
   }),
 
@@ -274,7 +185,7 @@ export const useGameStore = defineStore('game', {
      */
     clearHistory() {
       this.searchHistory = [];
-      localStorage.removeItem('g4g_search_history');
+      localStorage.removeItem(STORAGE_KEYS.SEARCH_HISTORY);
     },
 
     /**
@@ -293,14 +204,14 @@ export const useGameStore = defineStore('game', {
      * Save search history to localStorage
      */
     saveHistory() {
-      localStorage.setItem('g4g_search_history', JSON.stringify(this.searchHistory));
+      localStorage.setItem(STORAGE_KEYS.SEARCH_HISTORY, JSON.stringify(this.searchHistory));
     },
 
     /**
      * Load search history from localStorage
      */
     loadHistory() {
-      const saved = localStorage.getItem('g4g_search_history');
+      const saved = localStorage.getItem(STORAGE_KEYS.SEARCH_HISTORY);
       if (saved) {
         try {
           this.searchHistory = JSON.parse(saved);
@@ -314,14 +225,14 @@ export const useGameStore = defineStore('game', {
      * Save favorite games to localStorage
      */
     saveFavorites() {
-      localStorage.setItem('g4g_favorites', JSON.stringify(this.favoriteGames));
+      localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(this.favoriteGames));
     },
 
     /**
      * Load favorite games from localStorage
      */
     loadFavorites() {
-      const saved = localStorage.getItem('g4g_favorites');
+      const saved = localStorage.getItem(STORAGE_KEYS.FAVORITES);
       if (saved) {
         try {
           this.favoriteGames = JSON.parse(saved);
@@ -335,19 +246,46 @@ export const useGameStore = defineStore('game', {
      * Save user preferences to localStorage
      */
     savePreferences() {
-      localStorage.setItem('g4g_preferences', JSON.stringify(this.preferences));
+      localStorage.setItem(STORAGE_KEYS.PREFERENCES, JSON.stringify(this.preferences));
     },
 
     /**
      * Load user preferences from localStorage
      */
     loadPreferences() {
-      const saved = localStorage.getItem('g4g_preferences');
+      const saved = localStorage.getItem(STORAGE_KEYS.PREFERENCES);
       if (saved) {
         try {
           this.preferences = { ...this.preferences, ...JSON.parse(saved) };
         } catch (e) {
           console.error('Failed to load preferences', e);
+        }
+      }
+    },
+
+    /**
+     * Execute a search programmatically
+     * @param {string} query - The search query to execute
+     */
+    executeSearch(query) {
+      if (!query || query.trim() === '') return;
+
+      // Add to search history
+      this.addToHistory(query);
+
+      // Trigger search in Google CSE
+      if (window.google && window.google.search && window.google.search.cse) {
+        const element = document.querySelector('input.gsc-input');
+        if (element) {
+          element.value = query;
+          const event = new Event('input', { bubbles: true });
+          element.dispatchEvent(event);
+
+          // Trigger search button click or submit
+          const searchButton = document.querySelector('button.gsc-search-button');
+          if (searchButton) {
+            searchButton.click();
+          }
         }
       }
     },
