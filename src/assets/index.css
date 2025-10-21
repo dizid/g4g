@@ -1,13 +1,149 @@
-/* // src/assets/index.css */
+/* Main Tailwind CSS Imports */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Import Google Fonts for gaming aesthetic */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* Base Layer - Typography and Global Styles */
 @layer base {
+  /* Set default font and ensure smooth rendering */
+  body {
+    @apply font-gaming antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  /* Typography hierarchy */
   h1 {
-    @apply text-5xl;
+    @apply text-5xl md:text-6xl font-bold font-display tracking-tight;
   }
   h2 {
-    @apply text-4xl;
+    @apply text-4xl md:text-5xl font-bold font-display;
   }
+  h3 {
+    @apply text-3xl md:text-4xl font-semibold font-display;
+  }
+  h4 {
+    @apply text-2xl md:text-3xl font-semibold;
+  }
+
+  /* Custom scrollbar for gaming aesthetic */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-gaming-darker;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gaming-primary rounded-lg;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gaming-secondary;
+  }
+}
+
+/* Components Layer - Reusable Component Patterns */
+@layer components {
+  /* Glassmorphism card effect */
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl;
+  }
+
+  /* Gaming-style buttons */
+  .btn-gaming {
+    @apply px-6 py-3 bg-gradient-to-r from-gaming-primary to-gaming-secondary text-white font-semibold rounded-lg shadow-neon transition-all duration-300 hover:shadow-neon-strong hover:scale-105 active:scale-95;
+  }
+
+  .btn-gaming-outline {
+    @apply px-6 py-3 border-2 border-gaming-primary text-gaming-primary font-semibold rounded-lg transition-all duration-300 hover:bg-gaming-primary hover:text-white hover:shadow-neon;
+  }
+
+  /* Game card with hover effects */
+  .game-card {
+    @apply glass-card p-6 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-game-card;
+  }
+
+  /* Neon text effect */
+  .text-neon {
+    @apply bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink bg-clip-text text-transparent;
+  }
+
+  /* Animated gradient background */
+  .bg-gradient-animated {
+    background: linear-gradient(-45deg, #0a0e27, #1a1f3a, #2a1f4a, #1f1a3a);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+
+  /* Search box styling */
+  .search-input {
+    @apply w-full px-6 py-4 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-gaming-primary focus:shadow-neon transition-all duration-300;
+  }
+
+  /* Badge styling */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  /* Loading spinner */
+  .spinner {
+    @apply inline-block w-8 h-8 border-4 border-white/20 border-t-gaming-primary rounded-full animate-spin;
+  }
+}
+
+/* Utilities Layer - Custom Utility Classes */
+@layer utilities {
+  /* Text gradient utilities */
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-gaming-primary to-gaming-secondary bg-clip-text text-transparent;
+  }
+
+  .text-gradient-neon {
+    @apply bg-gradient-to-r from-neon-blue to-neon-purple bg-clip-text text-transparent;
+  }
+
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+  }
+
+  .glow-secondary {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  }
+
+  /* Custom transitions */
+  .transition-gaming {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Gradient animation keyframes */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Custom Google Search styling to match theme */
+.gsc-control-cse {
+  @apply bg-transparent border-0 !important;
+}
+
+.gsc-search-button {
+  @apply bg-gaming-primary !important;
+}
+
+.gsc-input-box {
+  @apply bg-white/5 border-white/10 !important;
+}
+
+.gsst_a .gscb_a {
+  @apply text-white !important;
 }

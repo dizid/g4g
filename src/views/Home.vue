@@ -1,117 +1,331 @@
-<template>
-  <nav class="flex items-center justify-start bg-gray-700 p-6">
-    <img
-      src="../assets/heart4.svg"
-      alt="triangle with all three sides equal"
-      height="33"
-      width="33"
-    />
-    <router-link
-      to="/"
-      class="block lg:inline-block lg:mt-0 text-orange-500 hover:text-orange-900 mr-4"
-    >
-      <span class="ml-4 font-semibold text-2xl tracking-tight"
-        >Google 4 Games</span
-      ></router-link
-    >
-  </nav>
-  <div class="flex flex-grow flex-wrap overflow-hidden sm:-mx-1 mt-3p">
-    <div class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-1/5 p-6">
-      <!-- ADS LEFT  -->
-    </div>
+<!--
+  Home View - Main Landing Page
 
-    <div
-      id="middle-column"
-      class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-3/5 border rounded border-orange-500 p-1"
-    >
-      <!-- selectbox callt method changeRoute: router go to page /:slug (reloads page, through :key in App.vue)-->
-      <div>
-        <select
-          @change="changeRoute()"
-          v-model="selected"
-          class="mx-4 bg-blue-800 py-2 px-4 font-bold text-blue-300 text-sm rounded-lg"
+  Features:
+  - Modern gaming-themed hero section
+  - Grid of game cards with glassmorphism effects
+  - Favorites section
+  - Search history
+  - Animated transitions
+  - Responsive design
+
+  Uses Pinia store for state management
+  Integrates with Google Custom Search Engine
+-->
+
+<template>
+  <div class="min-h-screen bg-gradient-animated">
+    <!-- Navigation Header -->
+    <nav class="glass-card m-4 p-6 animate-slide-up">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <!-- Logo and brand -->
+        <router-link
+          to="/"
+          class="flex items-center gap-3 group"
         >
-          <option disabled value="">Select your game:</option>
-          <option value="clashroyale">Clash Royale</option>
-          <option value="fortnite">Fortnite</option>
-          <option value="minecraft">Minecraft</option>
-          <option value="destiny2">Destiny 2</option>
-        </select>
+          <div class="w-10 h-10 bg-gradient-to-br from-gaming-primary to-gaming-secondary rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+            <span class="text-2xl">🎮</span>
+          </div>
+          <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gradient-primary">
+              Google 4 Games
+            </h1>
+            <p class="text-sm text-white/60 hidden md:block">
+              Your Ultimate Gaming Search Engine
+            </p>
+          </div>
+        </router-link>
+
+        <!-- Navigation links -->
+        <div class="flex items-center gap-4">
+          <router-link
+            to="/about"
+            class="text-white/70 hover:text-white transition-colors duration-200 text-sm md:text-base"
+          >
+            About
+          </router-link>
+
+          <!-- Stats badge -->
+          <div class="hidden md:flex items-center gap-2 glass-card px-4 py-2">
+            <span class="text-white/60 text-sm">Games:</span>
+            <span class="text-gaming-primary font-bold">{{ totalGames }}</span>
+          </div>
+        </div>
       </div>
-      <div class="text-blue-500 my-3 mx-6">Search in {{ PSEname }}:</div>
-      <Searchbox :key="componentKey" />
-      <div class="w-full overflow-hidden sm:my-1 sm:px-1 xl:w-1/5 p-6">
-        <!-- ADS RIGHT -->
+    </nav>
+
+    <!-- Main content container -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+
+      <!-- Hero Section -->
+      <div class="text-center mb-12 animate-slide-up">
+        <h2 class="text-4xl md:text-6xl font-bold text-white mb-4">
+          Search Your Favorite
+          <span class="text-gradient-neon"> Games</span>
+        </h2>
+        <p class="text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
+          Discover guides, tips, strategies, and news for all your favorite games in one place
+        </p>
       </div>
+
+      <!-- Favorites Section (if any favorites exist) -->
+      <div v-if="hasFavorites" class="mb-8 animate-slide-up">
+        <div class="glass-card p-6">
+          <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+            </svg>
+            Your Favorites
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <GameCard
+              v-for="game in favoriteGames"
+              :key="game.id"
+              :game="game"
+              :isSelected="game.id === currentGame.id"
+              @select="handleGameSelect"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Selection Grid -->
+      <div class="mb-8 animate-slide-up">
+        <div class="glass-card p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-2xl font-bold text-white">
+              Select a Game
+            </h3>
+
+            <!-- Category filter (optional future enhancement) -->
+            <div class="text-sm text-white/50">
+              {{ games.length }} games available
+            </div>
+          </div>
+
+          <!-- Games grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <GameCard
+              v-for="game in games"
+              :key="game.id"
+              :game="game"
+              :isSelected="game.id === currentGame.id"
+              @select="handleGameSelect"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <!-- Search Box (takes 2 columns) -->
+        <div class="lg:col-span-2">
+          <div class="glass-card p-6 animate-slide-up">
+            <!-- Current game indicator -->
+            <div class="flex items-center gap-3 mb-4 p-4 rounded-lg bg-white/5">
+              <div class="text-3xl">{{ currentGame.icon }}</div>
+              <div class="flex-1">
+                <p class="text-sm text-white/60">Currently searching in:</p>
+                <h3 class="text-xl font-bold text-white">{{ currentGame.name }}</h3>
+              </div>
+              <div
+                class="px-4 py-2 rounded-lg bg-gradient-to-r text-white text-sm font-semibold"
+                :class="currentGame.color"
+              >
+                Active
+              </div>
+            </div>
+
+            <!-- Search component -->
+            <Searchbox :key="searchKey" />
+          </div>
+        </div>
+
+        <!-- Search History (takes 1 column) -->
+        <div class="lg:col-span-1">
+          <SearchHistory @search="handleHistorySearch" />
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="glass-card p-6 text-center animate-slide-up">
+        <p class="text-white/60">
+          Made with <span class="text-red-500">❤️</span> by
+          <a
+            href="https://dizid.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gaming-primary hover:text-gaming-secondary transition-colors duration-200 font-semibold"
+          >
+            dizid
+          </a>
+          · {{ currentYear }}
+        </p>
+        <p class="text-white/40 text-sm mt-2">
+          Powered by Google Custom Search · Vue 3 · Tailwind CSS
+        </p>
+      </footer>
     </div>
   </div>
-  <!--     <footer
-      class="mb-2 h-10 bg-gray-700 text-bold text-right text-xl tracking-wider"
-    >
-      <p>
-        Made by
-        <a class="text-orange-500 underline" href="https://dizid.com">dizid</a>
-        2020
-      </p>
-    </footer> -->
 </template>
 
-<script>
-import Searchbox from "../components/Searchbox";
-export default {
-  components: {
-    Searchbox,
-  },
-  props: { slug: "" },
-  data() {
-    return {
-      selected: "",
-      componentKey: 0,
-      PSEname: "",
-    };
-  },
-  methods: {
-    changeRoute() {
-      this.$router.push({ path: "/" + this.selected });
-      this.componentKey += 1; /* I want to reload Searchbox component  */
-    },
-    choosePSE() {
-      /* Decide which Google Programmable Search engine to load, based on slug */
-      var scripturl = "";
-      switch (this.$route.params.slug) {
-        case "clashroyale":
-          scripturl = "078e1680c0ebaf715";
-          this.PSEname = "Clash Royale";
-          break;
-        case "fortnite":
-          scripturl = "22f2b892095830119";
-          this.PSEname = "Fortnite";
-          break;
-        case "minecraft":
-          scripturl = "9602c93f57213795b";
-          this.PSEname = "Minecraft";
-          break;
-        case "destiny2":
-          scripturl = "8ecad2f2d493f4ab5";
-          this.PSEname = "Destiny 2";
-          break;
-        default:
-          scripturl = "a9a230432b58ecd21";
-          this.PSEname = "All games";
-      }
-      let PSEScript = document.createElement("script");
-      PSEScript.setAttribute(
-        "src",
-        ["https://cse.google.com/cse.js?cx=", scripturl].join("")
-      );
-      document.head.appendChild(PSEScript);
-      this.componentKey += 1; // I want to reload Searchbox component  */
-    },
-  },
-  mounted: function() {
-    this.choosePSE();
-  },
-};
+<script setup>
+/**
+ * Home View Script
+ *
+ * Main landing page logic including:
+ * - Game selection handling
+ * - Search engine initialization
+ * - Route parameter processing
+ * - State management integration
+ */
+
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useGameStore } from '@/stores/gameStore';
+import GameCard from '@/components/GameCard.vue';
+import Searchbox from '@/components/Searchbox.vue';
+import SearchHistory from '@/components/SearchHistory.vue';
+
+// Router and route access
+const route = useRoute();
+const router = useRouter();
+
+// Game store access
+const gameStore = useGameStore();
+
+// Component state
+const searchKey = ref(0);
+
+// Computed properties from store
+const games = computed(() => gameStore.games);
+const currentGame = computed(() => gameStore.currentGame);
+const favoriteGames = computed(() => gameStore.favoritesGamesObjects);
+const hasFavorites = computed(() => favoriteGames.value.length > 0);
+const totalGames = computed(() => games.value.length);
+
+// Get current year for footer
+const currentYear = new Date().getFullYear();
+
+/**
+ * Handle game selection from GameCard
+ * Updates route and triggers search engine reload
+ *
+ * @param {Object} game - Selected game object
+ */
+function handleGameSelect(game) {
+  // Update store
+  gameStore.selectGame(game.id);
+
+  // Update URL route
+  if (game.id === 'all') {
+    router.push({ path: '/' });
+  } else {
+    router.push({ path: `/${game.id}` });
+  }
+
+  // Force search box to reload
+  searchKey.value += 1;
+}
+
+/**
+ * Handle search from history
+ * This will trigger the search in the search box
+ *
+ * @param {string} searchTerm - Search term from history
+ */
+function handleHistorySearch(searchTerm) {
+  // Add to history again (moves to top)
+  gameStore.addToHistory(searchTerm);
+
+  // Note: Actual search execution would be handled by Google CSE
+  // You could trigger it programmatically if needed
+  console.log('Searching for:', searchTerm);
+}
+
+/**
+ * Initialize game selection based on route parameter
+ * Called on mount and when route changes
+ */
+function initializeGameFromRoute() {
+  const slug = route.params.slug;
+
+  if (slug) {
+    // Find game by slug/id
+    const game = games.value.find(g => g.id === slug);
+    if (game) {
+      gameStore.selectGame(game.id);
+    } else {
+      // Invalid slug, redirect to home
+      gameStore.selectGame('all');
+      router.push({ path: '/' });
+    }
+  } else {
+    // No slug, use default (all games)
+    gameStore.selectGame('all');
+  }
+
+  // Force searchbox reload
+  searchKey.value += 1;
+}
+
+// Watch for route changes
+watch(
+  () => route.params.slug,
+  () => {
+    initializeGameFromRoute();
+  }
+);
+
+// Component lifecycle - mounted
+onMounted(() => {
+  // Initialize store (load from localStorage)
+  gameStore.initialize();
+
+  // Initialize game based on route
+  initializeGameFromRoute();
+});
 </script>
 
-<style></style>
+<style scoped>
+/* Component-specific styles */
+
+/* Ensure proper spacing and layout */
+.min-h-screen {
+  min-height: 100vh;
+}
+
+/* Add stagger animation to grid items */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+/* Stagger delays for multiple elements */
+.animate-slide-up:nth-child(1) {
+  animation-delay: 0ms;
+}
+
+.animate-slide-up:nth-child(2) {
+  animation-delay: 100ms;
+}
+
+.animate-slide-up:nth-child(3) {
+  animation-delay: 200ms;
+}
+
+.animate-slide-up:nth-child(4) {
+  animation-delay: 300ms;
+}
+</style>
