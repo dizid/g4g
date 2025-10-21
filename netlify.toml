@@ -1,0 +1,45 @@
+# Netlify Configuration for Google 4 Games (G4G)
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "functions"
+
+# Environment variables for build
+[build.environment]
+  NODE_VERSION = "22.20.0"
+  NPM_VERSION = "10.9.3"
+
+# Cache settings
+[build.cache]
+  "node_modules" = "cache|source"
+
+# Redirects for Single Page Application (SPA)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for performance and security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
