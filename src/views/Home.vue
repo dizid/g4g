@@ -118,9 +118,9 @@
       </div>
 
       <!-- Search Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        <!-- Search Box (takes 2 columns) -->
-        <div class="lg:col-span-2">
+      <div ref="searchSection" class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
+        <!-- Search Box (takes 3 columns on lg, full width on mobile) -->
+        <div class="lg:col-span-3">
           <div class="glass-card p-6 animate-slide-up">
             <!-- Current game indicator -->
             <div class="flex items-center gap-3 mb-4 p-4 rounded-lg bg-white/5">
@@ -138,12 +138,12 @@
             </div>
 
             <!-- Search component -->
-            <Searchbox :key="searchKey" />
+            <Searchbox ref="searchboxComponent" :key="searchKey" />
           </div>
         </div>
 
-        <!-- Search History (takes 1 column) -->
-        <div class="lg:col-span-1">
+        <!-- Search History (takes 1 column on lg) -->
+        <div>
           <SearchHistory @search="handleHistorySearch" />
         </div>
       </div>
@@ -181,7 +181,7 @@
  * - State management integration
  */
 
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useGameStore } from '@/stores/gameStore';
 import GameCard from '@/components/GameCard.vue';
@@ -197,13 +197,21 @@ const gameStore = useGameStore();
 
 // Component state
 const searchKey = ref(0);
+const searchSection = ref(null);
+const searchboxComponent = ref(null);
 
 // Computed properties from store
-const games = computed(() => gameStore.games);
+const allGames = computed(() => gameStore.games);
 const currentGame = computed(() => gameStore.currentGame);
 const favoriteGames = computed(() => gameStore.favoritesGamesObjects);
 const hasFavorites = computed(() => favoriteGames.value.length > 0);
-const totalGames = computed(() => games.value.length);
+
+// Filter out favorited games from the main games list
+const games = computed(() => {
+  return allGames.value.filter(game => !gameStore.isFavorite(game.id));
+});
+
+const totalGames = computed(() => allGames.value.length);
 
 // Get current year for footer
 const currentYear = new Date().getFullYear();
@@ -211,6 +219,7 @@ const currentYear = new Date().getFullYear();
 /**
  * Handle game selection from GameCard
  * Updates route and triggers search engine reload
+ * Scrolls to search section after selection
  *
  * @param {Object} game - Selected game object
  */
@@ -227,6 +236,16 @@ function handleGameSelect(game) {
 
   // Force search box to reload
   searchKey.value += 1;
+
+  // Scroll to search section after game selection
+  nextTick(() => {
+    if (searchSection.value) {
+      searchSection.value.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  });
 }
 
 /**

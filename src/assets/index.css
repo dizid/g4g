@@ -141,9 +141,41 @@
 }
 
 .gsc-input-box {
-  @apply bg-white/5 border-white/10 !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 12px !important;
+  padding: 0 !important;
 }
 
 .gsst_a .gscb_a {
   @apply text-white !important;
+}
+
+/* Input field */
+.gsib_a {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: white !important;
+  font-size: 16px !important;
+  padding: 12px 16px !important;
+}
+
+.gsib_a::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.gsc-input {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: white !important;
+  font-size: 16px !important;
+  padding: 12px 16px !important;
+}
+
+.gsc-input::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.gsc-input:focus,
+.gsib_a:focus {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  color: white !important;
 }
