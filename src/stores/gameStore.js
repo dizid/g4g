@@ -103,7 +103,7 @@ export const useGameStore = defineStore('game', {
 
     /**
      * Load the Google Programmable Search Engine script for current game
-     * Removes previous script and loads new one
+     * Removes previous script and cleans up Google's global state before loading new one
      */
     loadSearchEngine() {
       this.isLoading = true;
@@ -112,30 +112,47 @@ export const useGameStore = defineStore('game', {
       const existingScripts = document.querySelectorAll('script[src*="cse.google.com"]');
       existingScripts.forEach(script => script.remove());
 
-      // Remove existing CSE elements
-      const existingCse = document.querySelectorAll('.gsc-control-cse');
-      existingCse.forEach(element => element.remove());
+      // Remove existing CSE-generated DOM elements
+      const cseSelectors = [
+        '.gsc-control-cse',
+        '.gsc-results-wrapper-overlay',
+        '.gsc-modal-background-image'
+      ];
+      cseSelectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => el.remove());
+      });
+
+      // Clear Google's global CSE state to force fresh initialization
+      if (window.__gcse) {
+        delete window.__gcse;
+      }
+      if (window.google && window.google.search) {
+        delete window.google.search;
+      }
 
       // Get current game's search engine ID
       const game = this.currentGame;
       const scriptUrl = `https://cse.google.com/cse.js?cx=${game.searchEngineId}`;
 
-      // Create and inject new script
-      const script = document.createElement('script');
-      script.setAttribute('src', scriptUrl);
-      script.setAttribute('async', 'true');
+      // Small delay to ensure cleanup is complete before loading new script
+      setTimeout(() => {
+        // Create and inject new script
+        const script = document.createElement('script');
+        script.setAttribute('src', scriptUrl);
+        script.setAttribute('async', 'true');
 
-      // Handle script load completion
-      script.onload = () => {
-        this.isLoading = false;
-      };
+        // Handle script load completion
+        script.onload = () => {
+          this.isLoading = false;
+        };
 
-      script.onerror = () => {
-        this.isLoading = false;
-        console.error('Failed to load search engine');
-      };
+        script.onerror = () => {
+          this.isLoading = false;
+          console.error('Failed to load search engine');
+        };
 
-      document.head.appendChild(script);
+        document.head.appendChild(script);
+      }, 50);
     },
 
     /**

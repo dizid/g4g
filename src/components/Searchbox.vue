@@ -46,7 +46,7 @@
       v-show="!isLoading && !hasError"
       class="text-white m-6 animate-fade-in"
     >
-      <div id="searchbox" class="gcse-searchbox"></div>
+      <div class="gcse-searchbox" data-gname="g4gsearch"></div>
     </div>
 
     <!-- Google CSE Search Results -->
@@ -54,7 +54,7 @@
       v-show="!isLoading && !hasError"
       class="animate-fade-in"
     >
-      <div class="gcse-searchresults"></div>
+      <div class="gcse-searchresults" data-gname="g4gsearch"></div>
     </div>
   </div>
 </template>
